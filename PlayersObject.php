@@ -38,6 +38,27 @@ class PlayersObject implements IReadWritePlayers {
         $this->playerJsonString = null;
     }
 
+    public function setPlayersArray($player){
+        $this->playersArray[] = $player;
+    }
+
+    public function getPlayersArray(){
+        return $this->playersArray;
+    }
+
+    public function setPlayerJsonString($player){
+        $players = [];
+        if ($this->playerJsonString) {
+            $players = json_decode($this->playerJsonString);
+        }
+        $players[] = $player;
+        $this->playerJsonString = json_encode($player);
+    }
+
+    public function getPlayerJsonString(){
+        return $this->playerJsonString;
+    }
+
     /**
      * @param $source string Where we're retrieving the data from. 'json', 'array' or 'file'
      * @param $filename string Only used if we're reading players in 'file' mode.
@@ -75,6 +96,8 @@ class PlayersObject implements IReadWritePlayers {
     function writePlayer($source, $player, $filename = null) {
         switch ($source) {
             case 'array':
+                // if the source is an array, we only use the playersArray variable
+                // Each element in playersArray will be an instance of stdClass
                 $this->playersArray[] = $player;
                 break;
             case 'json':
@@ -124,7 +147,7 @@ class PlayersObject implements IReadWritePlayers {
     }
 
     function display($isCLI, $source, $filename = null) {
-
+        // players can either be a json, array or a file depending on the source
         $players = $this->readPlayers($source, $filename);
 
         if ($isCLI) {
