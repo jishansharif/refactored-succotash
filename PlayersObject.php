@@ -153,19 +153,6 @@ class PlayersObject implements IReadWritePlayers {
         }
     }
 
-    function getPlayerDataJson() {
-        // file_get_contents("./", file_name)
-        // $json = '[{"name":"Jonas Valenciunas","age":26,"job":"Center","salary":"4.66m"},{"name":"Kyle Lowry","age":32,"job":"Point Guard","salary":"28.7m"},{"name":"Demar DeRozan","age":28,"job":"Shooting Guard","salary":"26.54m"},{"name":"Jakob Poeltl","age":22,"job":"Center","salary":"2.704m"}]';
-        // return $json;
-
-        // Read the JSON file 
-        $json = file_get_contents('playerdata.json');
-    
-        
-        // Display data
-        return $json;
-    }
-
     function getPlayerDataFromFile($filename) {
         $file = file_get_contents($filename);
         return $file;
