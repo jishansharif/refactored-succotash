@@ -45,16 +45,17 @@ class PlayersObject implements IReadWritePlayers {
      */
     function readPlayers($source, $filename = null) {
         $playerData = null;
-
+        $content = extract_file_content($filename = null);
         switch ($source) {
             case 'array':
-                $playerData = $this->getPlayerDataArray();
+                // Extract information from json file
+                $playerData = $this->getPlayerDataArray($content);
                 break;
             case 'json':
-                $playerData = $this->getPlayerDataJson();
+                $playerData = $this->content;
                 break;
             case 'file':
-                $playerData = $this->getPlayerDataFromFile($filename);
+                $playerData = $this->content;
                 break;
         }
 
@@ -96,44 +97,72 @@ class PlayersObject implements IReadWritePlayers {
     }
 
 
-    function getPlayerDataArray() {
-
+    function getPlayerDataArray($content) {
+        // Extract information using json file
         $players = [];
+        foreach ($content as $playerData) {
+            $data = new \stdClass();
+            $jonas->name = $playerData['name'];
+            $jonas->age = $playerData['age'];
+            $jonas->job = $playerData['job'];
+            $jonas->salary = $playerData['salary'];
+            $players[] = $data;
+        }
 
-        $jonas = new \stdClass();
-        $jonas->name = 'Jonas Valenciunas';
-        $jonas->age = 26;
-        $jonas->job = 'Center';
-        $jonas->salary = '4.66m';
-        $players[] = $jonas;
+        // $jonas = new \stdClass();
+        // $jonas->name = 'Jonas Valenciunas';
+        // $jonas->age = 26;
+        // $jonas->job = 'Center';
+        // $jonas->salary = '4.66m';
+        // $players[] = $jonas;
 
-        $kyle = new \stdClass();
-        $kyle->name = 'Kyle Lowry';
-        $kyle->age = 32;
-        $kyle->job = 'Point Guard';
-        $kyle->salary = '28.7m';
-        $players[] = $kyle;
+        // $kyle = new \stdClass();
+        // $kyle->name = 'Kyle Lowry';
+        // $kyle->age = 32;
+        // $kyle->job = 'Point Guard';
+        // $kyle->salary = '28.7m';
+        // $players[] = $kyle;
 
-        $demar = new \stdClass();
-        $demar->name = 'Demar DeRozan';
-        $demar->age = 28;
-        $demar->job = 'Shooting Guard';
-        $demar->salary = '26.54m';
-        $players[] = $demar;
+        // $demar = new \stdClass();
+        // $demar->name = 'Demar DeRozan';
+        // $demar->age = 28;
+        // $demar->job = 'Shooting Guard';
+        // $demar->salary = '26.54m';
+        // $players[] = $demar;
 
-        $jakob = new \stdClass();
-        $jakob->name = 'Jakob Poeltl';
-        $jakob->age = 22;
-        $jakob->job = 'Center';
-        $jakob->salary = '2.704m';
-        $players[] = $jakob;
+        // $jakob = new \stdClass();
+        // $jakob->name = 'Jakob Poeltl';
+        // $jakob->age = 22;
+        // $jakob->job = 'Center';
+        // $jakob->salary = '2.704m';
+        // $players[] = $jakob;
 
         return $players;
 
     }
 
+    function extractFileContent($filename=null) {
+        if (!$filename) {
+            $file = file_get_contents($filename);
+            return $file;
+        } else {
+            // Read the JSON file 
+            $json = file_get_contents('playerdata.json');
+            // Display data
+            return $json;
+        }
+    }
+
     function getPlayerDataJson() {
-        $json = '[{"name":"Jonas Valenciunas","age":26,"job":"Center","salary":"4.66m"},{"name":"Kyle Lowry","age":32,"job":"Point Guard","salary":"28.7m"},{"name":"Demar DeRozan","age":28,"job":"Shooting Guard","salary":"26.54m"},{"name":"Jakob Poeltl","age":22,"job":"Center","salary":"2.704m"}]';
+        // file_get_contents("./", file_name)
+        // $json = '[{"name":"Jonas Valenciunas","age":26,"job":"Center","salary":"4.66m"},{"name":"Kyle Lowry","age":32,"job":"Point Guard","salary":"28.7m"},{"name":"Demar DeRozan","age":28,"job":"Shooting Guard","salary":"26.54m"},{"name":"Jakob Poeltl","age":22,"job":"Center","salary":"2.704m"}]';
+        // return $json;
+
+        // Read the JSON file 
+        $json = file_get_contents('playerdata.json');
+    
+        
+        // Display data
         return $json;
     }
 
@@ -195,7 +224,8 @@ class PlayersObject implements IReadWritePlayers {
 }
 
 $playersObject = new PlayersObject();
-
+// Our first call was to the display method. 
+// We check if we make use of a CLI, and pass in an array as a source.
 $playersObject->display(php_sapi_name() === 'cli', 'array');
 
 ?>
