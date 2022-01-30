@@ -153,11 +153,6 @@ class PlayersObject implements IReadWritePlayers {
         }
     }
 
-    function getPlayerDataFromFile($filename) {
-        $file = file_get_contents($filename);
-        return $file;
-    }
-
     function display($isCLI, $source, $filename = null) {
 
         $players = $this->readPlayers($source, $filename);
